@@ -1,0 +1,44 @@
+package ShopItemDefinition
+import ObjectIdGenerator
+import ItemObjEditing
+
+public class ShopItemBuilder
+  private var name = ""
+  private var origId = 0
+  private var goldCost = 0
+  private var lumberCost = 0
+  private var tooltip = ""
+
+  construct(int origId, string name)
+    this.origId = origId
+    this.name = name
+
+  function goldCost(int cost)
+    this.goldCost = cost
+
+  function lumberCost(int cost)
+    this.lumberCost = cost
+
+  function tooltip(string tooltip)
+    this.tooltip = tooltip
+
+  function build() returns ShopItemDefinition
+    return new ShopItemDefinition(origId, name, goldCost, lumberCost, tooltip)
+
+
+public class ShopItemDefinition
+  let id = ITEM_ID_GEN.next()
+
+  var goldCost = 0
+  var lumberCost = 0
+
+  construct(int origId, string name, int gold, int lumber, string tooltip)
+    this.goldCost = gold
+    this.lumberCost = lumber
+    let def = new ItemDefinition(id, origId)
+    ..setName(name)
+    ..setGoldCost(gold)
+    ..setLumberCost(lumber)
+    ..setTooltipBasic("Purchase " + name)
+    if tooltip.isNotBlank()
+      def.setTooltipExtended(tooltip)

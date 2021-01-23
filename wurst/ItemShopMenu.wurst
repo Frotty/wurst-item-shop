@@ -1,0 +1,109 @@
+package ItemShopMenu
+import FramehandleNames
+import HashMap
+import SoundUtils
+import ClosureTimers
+import LinkedList
+import public ItemShopIcon
+import public ShopItemDefinition
+
+constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
+
+public class ItemShop
+  private var buyers = new IterableMap<player, unit>
+  private var items = new LinkedList<ItemIcon>
+
+
+  private constant PADDING = 0.02
+  private constant HORIZONTAL_SPACING = 0.03
+  private constant VERTICAL_SPACING = -0.04
+  private constant SECTION_SPACING = -0.015
+  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING)
+  private constant MAX_ICONS_PER_ROW = 7
+
+  private var currentVertSpacing = 0.
+  private var currentRowItems = 0
+
+  constant itemShopFrame = createFrame("FRAME", "itemShopFrame", GAME_UI, "", 0)
+  private constant itemShopBackdrop = createFrame("HeroPickMenuBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
+
+  construct()
+    itemShopFrame
+    ..setSize(0.25, 0.315)
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.68, 0.52))
+
+    itemShopBackdrop.setAllPoints(itemShopFrame)
+    itemShopFrame.hide()
+
+    doPeriodically(0.5) cb ->
+      buyers.forEach() (_player, value) ->
+        checkBuyability(_player)
+
+  function toggleView(player p, unit u)
+    if buyers.has(p)
+      hideForPlayer(p)
+    else
+      showToUnit(u)
+
+  function checkBuyability(player p)
+    let gold = p.getGold()
+    items.forEach(icon -> icon.checkBuyability(p, gold))
+
+  function showToPlayer(player buyer)
+    itemShopOpenSound.playForPlayer(buyer)
+    buyers.put(buyer, null)
+    itemShopFrame.show(buyer)
+    checkBuyability(buyer)
+
+  function showToUnit(unit buyer)
+    let owner = buyer.getOwner()
+    itemShopOpenSound.playForPlayer(owner)
+    buyers.put(owner, buyer)
+    itemShopFrame.show(owner)
+    checkBuyability(owner)
+
+  function hideForUnit(unit buyer)
+    buyers.remove(buyer.getOwner())
+    itemShopFrame.hide(buyer.getOwner())
+
+  function hideForPlayer(player buyer)
+    buyers.remove(buyer)
+    itemShopFrame.hide(buyer)
+
+  function addSection(string title)
+    if currentRowItems > 0
+      currentVertSpacing += VERTICAL_SPACING
+      currentRowItems = 0
+
+    new ShopSection(itemShopFrame, title, currentInsertPos())
+
+    currentVertSpacing += SECTION_SPACING
+
+  function currentInsertPos() returns vec2
+    return ITEM_ICON_INITIAL_POSITION + vec2(currentRowItems * HORIZONTAL_SPACING, currentVertSpacing)
+
+  function addItem(ShopItemDefinition itemDef)
+    let icon = new ItemIcon(itemShopFrame, buyers, itemDef)
+    items.add(icon)
+
+    icon.setIconPosition(itemShopFrame, currentInsertPos())
+    currentRowItems++
+    if currentRowItems > MAX_ICONS_PER_ROW
+      currentVertSpacing += VERTICAL_SPACING
+      currentRowItems = 0
+
+
+init
+  nullTimer() ->
+    let success = BlzLoadTOCFile("itemshop.toc")
+    if not success
+      print("TOC files could not be loaded")
+
+class ShopSection
+  framehandle itemText
+
+  construct(framehandle parent, string name, vec2 pos)
+    itemText = createFrame(FramehandleTypeNames.text, "itemText", parent, "", GetRandomInt(0, 1000000))
+    ..setText(name)
+    ..setTextColor(colorA(255, 255, 255, 1))
+    ..setPoint(FRAMEPOINT_TOPLEFT, parent, FRAMEPOINT_TOPLEFT, pos)

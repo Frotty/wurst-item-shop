@@ -1,0 +1,24 @@
+package ItemShopTest
+import ItemShopMenu
+import ClosureTimers
+import ToggleShopButton
+import UnitIds
+
+constant RING1 = compiletime(new ShopItemBuilder('rde2', "Cool Ring")..goldCost(50).build())
+constant RING2 = compiletime(new ShopItemBuilder('rde3', "Cool Ring")..goldCost(100).build())
+constant RING3 = compiletime(new ShopItemBuilder('rde4', "Cool Ring")..goldCost(150).build())
+
+init
+  nullTimer() ->
+    let shop = new ItemShop()
+    ..addSection("Consumables")
+    ..addItem(RING1)
+    ..addItem(RING2)
+    ..addItem(RING3)
+    ..addSection("Armor")
+    ..addItem(RING1)
+    ..addItem(RING2)
+    ..addItem(RING3)
+
+    new ToggleShopButton(shop)
+    ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))

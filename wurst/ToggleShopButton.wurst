@@ -1,0 +1,40 @@
+package ToggleShopButton
+import ClosureFrames
+import HashMap
+import ItemShopMenu
+
+constant hotkeyMap = new HashMap<trigger, ItemShop>
+constant targets = new HashMap<player, unit>
+
+public class ToggleShopButton
+  private constant buttonFrame = createFrame("GeneralButton", GAME_UI, 0, 0)
+
+  ItemShop shop
+
+  construct(ItemShop shop)
+    this.shop = shop
+    buttonFrame
+    ..setSize(0.09, 0.032)
+    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.55, 0.138))
+    ..setText("Shop (G)")
+    ..setScale(0.9)
+    ..onClick() ->
+      let p = GetTriggerPlayer()
+      this.buttonFrame.removeFocus()
+
+      shop.toggleView(p, targets.get(p))
+
+  function show(player p, unit target)
+    this.buttonFrame.show(p)
+    targets.put(p, target)
+
+  function addHotkeyForPlayer(player p, oskeytype key)
+    let trig = CreateTrigger()
+    ..addAction() ->
+      let clicker = GetTriggerPlayer()
+      let shop = hotkeyMap.get(GetTriggeringTrigger())
+
+      shop.showToPlayer(clicker)
+
+    BlzTriggerRegisterPlayerKeyEvent(trig, p, key, 0, false)
+    hotkeyMap.put(trig, shop)

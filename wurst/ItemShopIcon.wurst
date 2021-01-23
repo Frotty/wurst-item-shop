@@ -1,0 +1,100 @@
+package ItemShopIcon
+import SoundUtils
+import FramehandleNames
+import ClosureFrames
+import ShopItemDefinition
+import HashMap
+
+// Sounds
+constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
+constant itemBoughtSound = new SoundDefinition(Sounds.pickUpItem)
+constant cantBuyItemSound = new SoundDefinition(Sounds.error)
+
+public function framehandle.removeFocus()
+  this.disable()
+  this.enable()
+
+public class ItemIcon
+  static private var globalIconContext = 0
+
+  private ShopItemDefinition itemDef
+  private var iconContext = 0
+  private var iconPath = ""
+  private var iconPathDisabled = ""
+
+  private framehandle itemIconButton = null
+  private framehandle itemIcon = null
+  private framehandle itemText = null
+
+  IterableMap<player, unit> buyers
+
+  construct(framehandle parent, IterableMap<player, unit> buyers, ShopItemDefinition itemDef)
+    this.itemDef = itemDef
+    this.iconContext = globalIconContext
+    this.buyers = buyers
+    globalIconContext++
+
+    itemIconButton = createFrame(FramehandleTypeNames.gluebutton, "ItemIconButton", parent, FramehandleNames.iconButtonTemplate, iconContext)
+
+    itemIcon = createFrame(FramehandleTypeNames.backdrop, "itemIcon", itemIconButton, "", iconContext)
+      ..setAllPoints(itemIconButton)
+
+    itemText = createFrame(FramehandleTypeNames.text, "itemText", itemIconButton, "", iconContext)
+      ..setText(itemDef.goldCost.toString())
+      ..setTextColor(colorA(255, 215, 0, 1))
+      ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
+
+    itemIconButton.setSize(0.025, 0.025)
+
+    setupIcon()
+
+    setupBuyListener()
+
+  function setupBuyListener()
+    itemIconButton.onClick() ->
+      let p = GetTriggerPlayer()
+      let target = buyers.get(p)
+
+      itemIconButton.removeFocus()
+
+      if target != null
+        if target.isAlive()
+          if p.getGold() >= itemDef.goldCost
+            p.setGold(p.getGold() - itemDef.goldCost)
+            target.addItemById(itemDef.id)
+            itemBoughtSound.playForPlayer(p)
+          else
+            notEnoughGoldSound.playForPlayer(p)
+      else
+        cantBuyItemSound.playForPlayer(p)
+
+  function checkBuyability(player p, int gold)
+    if p == localPlayer
+      if this.itemDef.goldCost <= gold
+        itemIcon.setTexture(iconPath, 0, true)
+        itemText.setTextColor(colorA(255, 215, 0, 1))
+      else
+        itemIcon.setTexture(iconPathDisabled, 0, true)
+        itemText.setTextColor(colorA(200, 155, 0, 1))
+
+  private function setupIcon()
+    let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
+    itemIconButton.setTooltip(tooltip)
+
+    tooltip..setSize(0.28, 0.08)
+      ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
+
+    let tempItem = createItem(itemDef.id, vec2(0, 0))
+
+    iconPath = tempItem.getIconPath()
+    iconPathDisabled = iconPath.replace("BTN", "DISBTN").replace("CommandButtons", "CommandButtonsDisabled")
+
+    itemIcon.setTexture(iconPath, 0, true)
+
+    getFrame("BoxedTextTitle", iconContext).setText(tempItem.getTooltip())
+    getFrame("BoxedTextValue", iconContext).setText(tempItem.getExtendedTooltip())
+
+    tempItem.remove()
+
+  function setIconPosition(framehandle parent, vec2 iconPosition)
+    itemIconButton.setPoint(FRAMEPOINT_TOPLEFT, parent, FRAMEPOINT_TOPLEFT, iconPosition)
