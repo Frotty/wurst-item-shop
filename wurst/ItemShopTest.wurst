@@ -3,16 +3,26 @@ import ItemShopMenu
 import ClosureTimers
 import ToggleShopButton
 import UnitIds
+import ItemObjEditing
+import ObjectIdGenerator
 
-constant RING1 = compiletime(new ShopItemBuilder('rde2', "Cool Ring")..goldCost(50).build())
-constant RING2 = compiletime(new ShopItemBuilder('rde3', "Cool Ring")..goldCost(100).build())
-constant RING3 = compiletime(new ShopItemBuilder('rde4', "Cool Ring")..goldCost(150).build())
+constant ITEM = compiletime(new ItemDefinition(ITEM_ID_GEN.next(), 'rde2'))
+
+constant RING1 = compiletime(new ShopItemBuilder(ITEM, "Cool Ring")..goldCost(50).build())
+constant RING2 = compiletime(new ShopItemBuilder(ITEM, "Cool Ring")..goldCost(100).build())
+constant RING3 = compiletime(new ShopItemBuilder(ITEM, "Cool Ring")..goldCost(150).build())
 
 init
   nullTimer() ->
     let shop = new ItemShop()
     ..addSection("Consumables")
     ..addItem(RING1)
+    ..addItem(RING2)
+    ..addItem(RING3)
+    ..addItem(RING2)
+    ..addItem(RING3)
+    ..addItem(RING2)
+    ..addItem(RING3)
     ..addItem(RING2)
     ..addItem(RING3)
     ..addSection("Armor")
@@ -22,3 +32,4 @@ init
 
     new ToggleShopButton(shop)
     ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))
+    ..addHotkeyForPlayer(players[0], OSKEY_G)

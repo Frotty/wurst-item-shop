@@ -13,13 +13,13 @@ public class ItemShop
   private var buyers = new IterableMap<player, unit>
   private var items = new LinkedList<ItemIcon>
 
-
-  private constant PADDING = 0.02
-  private constant HORIZONTAL_SPACING = 0.03
-  private constant VERTICAL_SPACING = -0.04
+  private constant PADDINGX = 0.02
+  private constant PADDINGY = 0.0175
+  private constant HORIZONTAL_SPACING = 0.0275
+  private constant VERTICAL_SPACING = -0.0395
   private constant SECTION_SPACING = -0.015
-  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING)
-  private constant MAX_ICONS_PER_ROW = 7
+  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
+  private constant MAX_ICONS_PER_ROW = 6
 
   private var currentVertSpacing = 0.
   private var currentRowItems = 0
@@ -29,8 +29,8 @@ public class ItemShop
 
   construct()
     itemShopFrame
-    ..setSize(0.25, 0.315)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.68, 0.52))
+    ..setSize(0.245, 0.325)
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.69, 0.52))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()

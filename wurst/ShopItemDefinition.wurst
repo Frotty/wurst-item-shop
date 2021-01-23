@@ -1,16 +1,15 @@
 package ShopItemDefinition
-import ObjectIdGenerator
 import ItemObjEditing
 
 public class ShopItemBuilder
   private var name = ""
-  private var origId = 0
+  private ItemDefinition itemDef
   private var goldCost = 0
   private var lumberCost = 0
   private var tooltip = ""
 
-  construct(int origId, string name)
-    this.origId = origId
+  construct(ItemDefinition itemDef, string name)
+    this.itemDef = itemDef
     this.name = name
 
   function goldCost(int cost)
@@ -23,22 +22,23 @@ public class ShopItemBuilder
     this.tooltip = tooltip
 
   function build() returns ShopItemDefinition
-    return new ShopItemDefinition(origId, name, goldCost, lumberCost, tooltip)
+    return new ShopItemDefinition(itemDef, name, goldCost, lumberCost, tooltip)
 
 
 public class ShopItemDefinition
-  let id = ITEM_ID_GEN.next()
+  var id = 0
 
   var goldCost = 0
   var lumberCost = 0
 
-  construct(int origId, string name, int gold, int lumber, string tooltip)
+  construct(ItemDefinition itemDef, string name, int gold, int lumber, string tooltip)
     this.goldCost = gold
     this.lumberCost = lumber
-    let def = new ItemDefinition(id, origId)
+    this.id = itemDef.getNewId()
+    itemDef
     ..setName(name)
     ..setGoldCost(gold)
     ..setLumberCost(lumber)
     ..setTooltipBasic("Purchase " + name)
     if tooltip.isNotBlank()
-      def.setTooltipExtended(tooltip)
+      itemDef.setTooltipExtended(tooltip)

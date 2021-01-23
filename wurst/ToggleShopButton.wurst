@@ -34,7 +34,7 @@ public class ToggleShopButton
       let clicker = GetTriggerPlayer()
       let shop = hotkeyMap.get(GetTriggeringTrigger())
 
-      shop.showToPlayer(clicker)
+      shop.toggleView(clicker, targets.get(clicker))
 
     BlzTriggerRegisterPlayerKeyEvent(trig, p, key, 0, false)
     hotkeyMap.put(trig, shop)
