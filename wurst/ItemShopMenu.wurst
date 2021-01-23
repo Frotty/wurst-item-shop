@@ -25,7 +25,7 @@ public class ItemShop
   private var currentRowItems = 0
 
   constant itemShopFrame = createFrame("FRAME", "itemShopFrame", GAME_UI, "", 0)
-  private constant itemShopBackdrop = createFrame("HeroPickMenuBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
+  private constant itemShopBackdrop = createFrame("ItemShopBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
 
   construct()
     itemShopFrame
@@ -50,14 +50,12 @@ public class ItemShop
     items.forEach(icon -> icon.checkBuyability(p, gold))
 
   function showToPlayer(player buyer)
-    itemShopOpenSound.playForPlayer(buyer)
     buyers.put(buyer, null)
     itemShopFrame.show(buyer)
     checkBuyability(buyer)
 
   function showToUnit(unit buyer)
     let owner = buyer.getOwner()
-    itemShopOpenSound.playForPlayer(owner)
     buyers.put(owner, buyer)
     itemShopFrame.show(owner)
     checkBuyability(owner)

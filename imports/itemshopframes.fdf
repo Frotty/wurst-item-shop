@@ -22,7 +22,7 @@ Frame "GLUETEXTBUTTON" "GeneralButton" INHERITS WITHCHILDREN "EscMenuButtonTempl
     }
 }
 
-Frame "BACKDROP" "HeroPickMenuBackdrop" {
+Frame "BACKDROP" "ItemShopBackdrop" {
         DecorateFileNames, //Look-Up Names in some String table (for example gameinterface)
         BackdropTileBackground, //Tile mode enabled
         BackdropBackground  "EscMenuBackground", //BackgroundFile
