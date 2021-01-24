@@ -11,12 +11,12 @@ public class ToggleShopButton
 
   ItemShop shop
 
-  construct(ItemShop shop)
+  construct(ItemShop shop, string title)
     this.shop = shop
     buttonFrame
     ..setSize(0.09, 0.032)
     ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.55, 0.138))
-    ..setText("Shop (G)")
+    ..setText(title)
     ..setScale(0.9)
     ..onClick() ->
       let p = GetTriggerPlayer()

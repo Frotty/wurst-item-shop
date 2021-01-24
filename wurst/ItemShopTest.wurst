@@ -30,6 +30,6 @@ init
     ..addItem(RING2)
     ..addItem(RING3)
 
-    new ToggleShopButton(shop)
+    new ToggleShopButton(shop, "Shop (L)")
     ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))
-    ..addHotkeyForPlayer(players[0], OSKEY_G)
+    ..addHotkeyForPlayer(players[0], OSKEY_L)
