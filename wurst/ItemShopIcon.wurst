@@ -91,8 +91,8 @@ public class ItemIcon
 
     itemIcon.setTexture(iconPath, 0, true)
 
-    getFrame("BoxedTextTitle", iconContext).setText(tempItem.getTooltip())
-    getFrame("BoxedTextValue", iconContext).setText(tempItem.getExtendedTooltip())
+    getFrame("BoxedTextTitle", iconContext).setText(itemDef.tooltipTitle)
+    getFrame("BoxedTextValue", iconContext).setText(itemDef.tooltipDescription)
 
     tempItem.remove()
 

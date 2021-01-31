@@ -1,44 +1,21 @@
 package ShopItemDefinition
-import ItemObjEditing
-
-public class ShopItemBuilder
-  private var name = ""
-  private ItemDefinition itemDef
-  private var goldCost = 0
-  private var lumberCost = 0
-  private var tooltip = ""
-
-  construct(ItemDefinition itemDef, string name)
-    this.itemDef = itemDef
-    this.name = name
-
-  function goldCost(int cost)
-    this.goldCost = cost
-
-  function lumberCost(int cost)
-    this.lumberCost = cost
-
-  function tooltip(string tooltip)
-    this.tooltip = tooltip
-
-  function build() returns ShopItemDefinition
-    return new ShopItemDefinition(itemDef, name, goldCost, lumberCost, tooltip)
-
+import RecipeItem
 
 public class ShopItemDefinition
   var id = 0
 
   var goldCost = 0
   var lumberCost = 0
+  var tooltipTitle = ""
+  var tooltipDescription = ""
 
-  construct(ItemDefinition itemDef, string name, int gold, int lumber, string tooltip)
-    this.goldCost = gold
-    this.lumberCost = lumber
-    this.id = itemDef.getNewId()
-    itemDef
-    ..setName(name)
-    ..setGoldCost(gold)
-    ..setLumberCost(lumber)
-    ..setTooltipBasic("Purchase " + name)
-    if tooltip.isNotBlank()
-      itemDef.setTooltipExtended(tooltip)
+  construct(RecipeItem recipeItem)
+    this.id = recipeItem.tomeId
+
+    this.goldCost = recipeItem.goldCost
+    this.lumberCost = recipeItem.lumberCost
+  
+    tooltipTitle = "Purchase " + recipeItem.name
+    let tempItem = createItem(recipeItem.tomeId, vec2(0, 0))
+    tooltipDescription = tempItem.getExtendedTooltip()
+    tempItem.remove()
