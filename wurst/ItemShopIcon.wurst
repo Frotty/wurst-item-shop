@@ -2,8 +2,8 @@ package ItemShopIcon
 import SoundUtils
 import FramehandleNames
 import ClosureFrames
-import ShopItemDefinition
 import HashMap
+import RecipeItem
 
 // Sounds
 constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
@@ -17,7 +17,7 @@ public function framehandle.removeFocus()
 public class ItemIcon
   static private var globalIconContext = 0
 
-  private ShopItemDefinition itemDef
+  private RecipeItem itemDef
   private var iconContext = 0
   private var iconPath = ""
   private var iconPathDisabled = ""
@@ -28,7 +28,7 @@ public class ItemIcon
 
   IterableMap<player, unit> buyers
 
-  construct(framehandle parent, IterableMap<player, unit> buyers, ShopItemDefinition itemDef)
+  construct(framehandle parent, IterableMap<player, unit> buyers, RecipeItem itemDef)
     this.itemDef = itemDef
     this.iconContext = globalIconContext
     this.buyers = buyers
@@ -61,7 +61,7 @@ public class ItemIcon
         if target.isAlive()
           if p.getGold() >= itemDef.goldCost
             p.setGold(p.getGold() - itemDef.goldCost)
-            target.addItemById(itemDef.id)
+            target.addItemById(itemDef.tomeId)
             itemBoughtSound.playForPlayer(p)
           else
             notEnoughGoldSound.playForPlayer(p)
@@ -84,15 +84,15 @@ public class ItemIcon
     tooltip..setSize(0.28, 0.08)
       ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
 
-    let tempItem = createItem(itemDef.id, vec2(0, 0))
+    let tempItem = createItem(itemDef.tomeId, vec2(0, 0))
 
     iconPath = tempItem.getIconPath()
     iconPathDisabled = iconPath.replace("BTN", "DISBTN").replace("CommandButtons", "CommandButtonsDisabled")
 
     itemIcon.setTexture(iconPath, 0, true)
 
-    getFrame("BoxedTextTitle", iconContext).setText(itemDef.tooltipTitle)
-    getFrame("BoxedTextValue", iconContext).setText(itemDef.tooltipDescription)
+    // getFrame("BoxedTextTitle", iconContext).setText(itemDef.tool)
+    // getFrame("BoxedTextValue", iconContext).setText(itemDef.tooltipDescription)
 
     tempItem.remove()
 

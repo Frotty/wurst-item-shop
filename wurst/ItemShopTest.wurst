@@ -7,36 +7,25 @@ import RecipeItem
 import ItemRecipe
 import Icons
 
-constant SWORD_ITEM = compiletime(new RecipeItem()..setName("Cool Sword")..setInterfaceIcon(Icons.bTNSteelMelee)..setGoldCost(120)..build())..register()
-constant RING_ITEM = compiletime(new RecipeItem()..setName("Cool Ring")..setInterfaceIcon(Icons.bTNRingGreen)..setGoldCost(140)..build())..register()
-constant ARMOR_ITEM = compiletime(new RecipeItem()..setName("Cool Armor")..setInterfaceIcon(Icons.bTNSteelArmor)..setGoldCost(160)..build())..register()
-constant SUPER_ARMOR_ITEM = compiletime(new RecipeItem()..setName("Super Armor")..setInterfaceIcon(Icons.bTNArcaniteArmor)..build())..register()
-constant SUPER_ARMOR_ITEM_RECIPE= compiletime(new RecipeItem()..setName("Super Armor Recipe")..setInterfaceIcon(Icons.bTNArcaniteArmor)..setGoldCost(150)..build())..register()
+constant SWORD_ITEM = compiletime(new RecipeItem()..setName("Cool Sword")..setInterfaceIcon(Icons.bTNSteelMelee)..setGoldCost(120))..register()
+constant RING_ITEM = compiletime(new RecipeItem()..setName("Cool Ring")..setInterfaceIcon(Icons.bTNRingGreen)..setGoldCost(140))..register()
+constant ARMOR_ITEM = compiletime(new RecipeItem()..setName("Cool Armor")..setInterfaceIcon(Icons.bTNSteelArmor)..setGoldCost(160))..register()
+constant SUPER_ARMOR_ITEM = compiletime(new RecipeItem()..setName("Super Armor")..setInterfaceIcon(Icons.bTNArcaniteArmor))..register()
+constant SUPER_ARMOR_ITEM_RECIPE = compiletime(new RecipeItem()..setName("Super Armor Recipe")..setInterfaceIcon(Icons.bTNArcaniteArmor)..setGoldCost(150))..register()
 
-constant SUPER_ARMOR_RECIPE = compiletime(new ItemRecipe("Ring Recipe")..setRequiredItems(RING_ITEM.getNewId(), ARMOR_ITEM.getNewId(), SUPER_ARMOR_ITEM_RECIPE.getNewId())..setResultItem(SUPER_ARMOR_ITEM.getNewId()))
-
-constant SWORD = new ShopItemDefinition(SWORD_ITEM)
-constant RING = new ShopItemDefinition(RING_ITEM)
-constant ARMOR = new ShopItemDefinition(ARMOR_ITEM)
-constant SUPER_ARMOR = new ShopItemDefinition(SUPER_ARMOR_ITEM_RECIPE)
+constant SUPER_ARMOR_RECIPE = new ItemRecipe("Ring Recipe")
+  ..setRequiredItems(RING_ITEM.getNewId(), ARMOR_ITEM.getNewId(), SUPER_ARMOR_ITEM_RECIPE.getNewId())
+  ..setResultItem(SUPER_ARMOR_ITEM.getNewId())
 
 init
   nullTimer() ->
     let shop = new ItemShop()
-    ..addSection("Consumables")
-    ..addItem(SWORD)
-    ..addItem(ARMOR)
-    ..addItem(SWORD)
-    ..addItem(RING)
-    ..addItem(RING)
-    ..addItem(SWORD)
-    ..addItem(SUPER_ARMOR)
-    ..addItem(ARMOR)
-    ..addItem(SWORD)
     ..addSection("Armor")
-    ..addItem(SWORD)
-    ..addItem(ARMOR)
-    ..addItem(RING)
+    ..addItem(SWORD_ITEM)
+    ..addItem(RING_ITEM)
+    ..addItem(ARMOR_ITEM)
+    ..addSection("Recipes")
+    ..addItem(SUPER_ARMOR_ITEM_RECIPE)
 
     new ToggleShopButton(shop, "Shop (L)")
     ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))

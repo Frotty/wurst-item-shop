@@ -5,7 +5,7 @@ import SoundUtils
 import ClosureTimers
 import LinkedList
 import public ItemShopIcon
-import public ShopItemDefinition
+import RecipeItem
 
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
 
@@ -80,7 +80,7 @@ public class ItemShop
   function currentInsertPos() returns vec2
     return ITEM_ICON_INITIAL_POSITION + vec2(currentRowItems * HORIZONTAL_SPACING, currentVertSpacing)
 
-  function addItem(ShopItemDefinition itemDef)
+  function addItem(RecipeItem itemDef)
     let icon = new ItemIcon(itemShopFrame, buyers, itemDef)
     items.add(icon)
 
