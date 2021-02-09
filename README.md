@@ -7,4 +7,6 @@ Requires `wurst-item-recipes`.
 
 Easily add a fullscreen item shop to your map using the new ui natives.
 
+You need to add the .toc and .fdef files from the imports folder into your own project's imports folder.
+
 ![](https://github.com/Frotty/wurst-item-shop/blob/main/screenshot.png)
