@@ -2,3 +2,4 @@
 dependencies:
 - https://github.com/wurstscript/wurstStdlib2
 - https://github.com/Frotty/wurst-item-recipes.git:main
+- https://github.com/Frotty/wurst-bonus-handler

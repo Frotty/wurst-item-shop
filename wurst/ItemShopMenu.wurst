@@ -80,8 +80,21 @@ public class ItemShop
   function currentInsertPos() returns vec2
     return ITEM_ICON_INITIAL_POSITION + vec2(currentRowItems * HORIZONTAL_SPACING, currentVertSpacing)
 
+
+  function addRecipe(ItemRecipe recipeDef)
+    let icon = new ItemIcon(itemShopFrame, buyers)
+    icon.setupRecipe(recipeDef)
+    items.add(icon)
+
+    icon.setIconPosition(itemShopFrame, currentInsertPos())
+    currentRowItems++
+    if currentRowItems > MAX_ICONS_PER_ROW
+      currentVertSpacing += VERTICAL_SPACING
+      currentRowItems = 0
+
   function addItem(RecipeItem itemDef)
-    let icon = new ItemIcon(itemShopFrame, buyers, itemDef)
+    let icon = new ItemIcon(itemShopFrame, buyers)
+    icon.setupItem(itemDef)
     items.add(icon)
 
     icon.setIconPosition(itemShopFrame, currentInsertPos())

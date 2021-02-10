@@ -4,43 +4,44 @@ import ClosureTimers
 import ToggleShopButton
 import UnitIds
 import RecipeItem
-import ItemRecipe
 import Icons
 
 constant SWORD_ITEM = compiletime(new RecipeItem()
   ..setName("Cool Sword")
   ..setInterfaceIcon(Icons.bTNSteelMelee)
   ..setGoldCost(120)
-  ..setTooltipBasic("Purchase Cool Sword")
-  ..setTooltipExtended("Adds some damage.")
+  ..addBonus(Bonus.DAMAGE, 10)
+  ..generateTooltip("It cuts through enemies.")
 )..register()
+
 constant RING_ITEM = compiletime(new RecipeItem()
   ..setName("Cool Ring")
   ..setInterfaceIcon(Icons.bTNRingGreen)
   ..setGoldCost(140)
-  ..setTooltipBasic("Purchase Cool Ring")
-  ..setTooltipExtended("Adds some armor.")
+  ..addBonus(Bonus.ARMOR, 2)
+  ..generateTooltip("Looks shiny.")
 )..register()
+
 constant ARMOR_ITEM = compiletime(new RecipeItem()
   ..setName("Cool Armor")
   ..setInterfaceIcon(Icons.bTNSteelArmor)
   ..setGoldCost(160)
-  ..setTooltipBasic("Purchase Cool Armor")
-  ..setTooltipExtended("Adds some HP.")
+  ..addBonus(Bonus.LIFE, 100)
+  ..generateTooltip("Pretty cool.")
 )..register()
 
-constant SUPER_ARMOR_ITEM = compiletime(new RecipeItem()..setName("Super Armor")..setInterfaceIcon(Icons.bTNAdvancedMoonArmor))..register()
-constant SUPER_ARMOR_ITEM_RECIPE = compiletime(new RecipeItem()
-  ..setName("Super Cool Armor Recipe")
+constant SUPER_ARMOR_ITEM = compiletime(new RecipeItem()
+  ..setName("Super Armor")
+  ..addBonus(Bonus.LIFE, 150)
+  ..addBonus(Bonus.ARMOR, 4)
+  ..setGoldCost(260)
   ..setInterfaceIcon(Icons.bTNAdvancedMoonArmor)
-  ..setTooltipBasic("Purchase Super Cool Armor Recipe")
-  ..setTooltipExtended("Makes you very cool.\nRequires:\n-Cool Ring\n-Cool Armor" + ARMOR_ITEM.name)
-  ..setGoldCost(150)
 )..register()
 
 constant SUPER_ARMOR_RECIPE = new ItemRecipe()
-  ..setRequiredItems(RING_ITEM.getNewId(), ARMOR_ITEM.getNewId(), SUPER_ARMOR_ITEM_RECIPE.getNewId())
-  ..setResultItem(SUPER_ARMOR_ITEM.getNewId())
+  ..gold(100)
+  ..setRequiredItems(RING_ITEM.getNewId(), ARMOR_ITEM.getNewId())
+  ..setResultItem(SUPER_ARMOR_ITEM.getNewId(), SUPER_ARMOR_ITEM.bonusList)
 
 init
   nullTimer() ->
@@ -50,7 +51,7 @@ init
     ..addItem(RING_ITEM)
     ..addItem(ARMOR_ITEM)
     ..addSection("Recipes")
-    ..addItem(SUPER_ARMOR_ITEM_RECIPE)
+    ..addRecipe(SUPER_ARMOR_RECIPE)
 
     new ToggleShopButton(shop, "Shop (L)")
     ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))

@@ -4,11 +4,19 @@ import FramehandleNames
 import ClosureFrames
 import HashMap
 import RecipeItem
+import ItemRecipe
 
 // Sounds
 constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
 constant itemBoughtSound = new SoundDefinition(Sounds.pickUpItem)
 constant cantBuyItemSound = new SoundDefinition(Sounds.error)
+constant ERROR_SOUND = CreateSoundFromLabel("InterfaceError", false, false, false, 10, 10)
+
+function simerror(player p, string msg)
+  if localPlayer == p
+    ClearTextMessages()
+    DisplayTimedTextToPlayer(p, 0.51, 0.91, 2.00, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n|cffff2600" + msg + "|r" )
+    ERROR_SOUND.play()
 
 public function framehandle.removeFocus()
   this.disable()
@@ -18,6 +26,7 @@ public class ItemIcon
   static private var globalIconContext = 0
 
   private RecipeItem itemDef
+  private ItemRecipe recipeDef
   private var iconContext = 0
   private var iconPath = ""
   private var iconPathDisabled = ""
@@ -28,8 +37,7 @@ public class ItemIcon
 
   IterableMap<player, unit> buyers
 
-  construct(framehandle parent, IterableMap<player, unit> buyers, RecipeItem itemDef)
-    this.itemDef = itemDef
+  construct(framehandle parent, IterableMap<player, unit> buyers)
     this.iconContext = globalIconContext
     this.buyers = buyers
     globalIconContext++
@@ -40,17 +48,15 @@ public class ItemIcon
       ..setAllPoints(itemIconButton)
 
     itemText = createFrame(FramehandleTypeNames.text, "itemText", itemIconButton, "", iconContext)
-      ..setText(itemDef.goldCost.toString())
       ..setTextColor(colorA(255, 215, 0, 1))
       ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
 
     itemIconButton.setSize(0.025, 0.025)
 
+  function setupItem(RecipeItem def)
+    this.itemDef = def
     setupIcon()
-
-    setupBuyListener()
-
-  function setupBuyListener()
+    itemText..setText(itemDef.goldCost.toString())
     itemIconButton.onClick() ->
       let p = GetTriggerPlayer()
       let target = buyers.get(p)
@@ -68,9 +74,34 @@ public class ItemIcon
       else
         cantBuyItemSound.playForPlayer(p)
 
+
+  function setupRecipe(ItemRecipe def)
+    this.recipeDef = def
+    setupIcon()
+    itemText..setText(recipeDef.goldCost.toString())
+    itemIconButton.onClick() ->
+      let p = GetTriggerPlayer()
+      let target = buyers.get(p)
+
+      itemIconButton.removeFocus()
+
+      if target != null
+        if target.isAlive()
+          if p.getGold() >= recipeDef.goldCost
+            if recipeDef.checkUnit(target, -1)
+              p.setGold(p.getGold() - recipeDef.goldCost)
+              itemBoughtSound.playForPlayer(p)
+            else
+              simerror(p, "Missing required items!")
+          else
+            notEnoughGoldSound.playForPlayer(p)
+      else
+        cantBuyItemSound.playForPlayer(p)
+
+
   function checkBuyability(player p, int gold)
     if p == localPlayer
-      if this.itemDef.goldCost <= gold
+      if ((itemDef != null ? itemDef.goldCost : recipeDef.goldCost) <= gold)
         itemIcon.setTexture(iconPath, 0, true)
         itemText.setTextColor(colorA(255, 215, 0, 1))
       else
@@ -84,15 +115,15 @@ public class ItemIcon
     tooltip..setSize(0.28, 0.10)
       ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
 
-    let tempItem = createItem(itemDef.tomeId, vec2(0, 0))
+    let tempItem = createItem(itemDef != null ? itemDef.tomeId : recipeDef.resultItemId, vec2(0, 0))
 
     iconPath = tempItem.getIconPath()
     iconPathDisabled = iconPath.replace("BTN", "DISBTN").replace("CommandButtons", "CommandButtonsDisabled")
 
     itemIcon.setTexture(iconPath, 0, true)
 
-    getFrame("BoxedTextTitle", iconContext).setText(itemDef.tooltipBasic)
-    getFrame("BoxedTextValue", iconContext).setText(itemDef.tooltipExtended)
+    getFrame("BoxedTextTitle", iconContext).setText(itemDef != null ? itemDef.tooltipBasic : recipeDef.name)
+    getFrame("BoxedTextValue", iconContext).setText(itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip)
 
     tempItem.remove()
 
