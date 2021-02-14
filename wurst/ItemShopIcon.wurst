@@ -112,7 +112,7 @@ public class ItemIcon
     let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
     itemIconButton.setTooltip(tooltip)
 
-    tooltip..setSize(0.28, 0.10)
+    tooltip..setSize(0.24, 0.12)
       ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
 
     let tempItem = createItem(itemDef != null ? itemDef.tomeId : recipeDef.resultItemId, vec2(0, 0))
