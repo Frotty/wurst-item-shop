@@ -29,7 +29,7 @@ public class ItemShop
 
   construct()
     itemShopFrame
-    ..setSize(0.245, 0.355)
+    ..setSize(0.245, 0.365)
     ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.69, 0.52))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
