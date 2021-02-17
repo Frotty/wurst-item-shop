@@ -41,7 +41,7 @@ constant SUPER_ARMOR_ITEM = compiletime(new RecipeItem()
 constant SUPER_ARMOR_RECIPE = new ItemRecipe()
   ..gold(100)
   ..setRequiredItems(RING_ITEM.getNewId(), ARMOR_ITEM.getNewId())
-  ..setResultItem(SUPER_ARMOR_ITEM.getNewId(), SUPER_ARMOR_ITEM.bonusList)
+  ..setResultItem(SUPER_ARMOR_ITEM)
 
 init
   nullTimer() ->
