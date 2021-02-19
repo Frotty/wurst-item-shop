@@ -112,9 +112,6 @@ public class ItemIcon
     let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
     itemIconButton.setTooltip(tooltip)
 
-    tooltip..setSize(0.24, 0.12)
-      ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
-
     let tempItem = createItem(itemDef != null ? itemDef.tomeId : recipeDef.resultItemId, vec2(0, 0))
 
     iconPath = tempItem.getIconPath()
@@ -122,8 +119,15 @@ public class ItemIcon
 
     itemIcon.setTexture(iconPath, 0, true)
 
-    getFrame("BoxedTextTitle", iconContext).setText(itemDef != null ? itemDef.tooltipBasic : recipeDef.name)
-    getFrame("BoxedTextValue", iconContext).setText(itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip)
+    let textTitle = getFrame("BoxedTextTitle", iconContext)..setText(itemDef != null ? itemDef.tooltipBasic : recipeDef.name)
+    ..setSize(0.24, 0)
+    ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
+    let textValue = getFrame("BoxedTextValue", iconContext)..setText(itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip)
+    ..setSize(0.24, 0)
+    ..setPoint(FRAMEPOINT_TOP, textTitle, FRAMEPOINT_BOTTOM, 0, -0.005)
+    
+    tooltip.setPoint(FRAMEPOINT_TOPRIGHT, textTitle, FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
+    tooltip.setPoint(FRAMEPOINT_BOTTOMLEFT, textValue, FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
 
     tempItem.remove()
 
