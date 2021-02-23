@@ -24,13 +24,13 @@ public class ItemShop
   private var currentVertSpacing = 0.
   private var currentRowItems = 0
 
-  constant itemShopFrame = createFrame("FRAME", "itemShopFrame", GAME_UI, "", 0)
+  constant itemShopFrame = createFrame("FRAME", "itemShopFrame", getFrame("ConsoleUIBackdrop", 0), "", 0)
   private constant itemShopBackdrop = createFrame("ItemShopBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
 
   construct()
     itemShopFrame
     ..setSize(0.245, 0.365)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.69, 0.53))
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.8, 0.53))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
