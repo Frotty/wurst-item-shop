@@ -26,11 +26,21 @@ public class ItemShop
 
   constant itemShopFrame = createFrame("FRAME", "itemShopFrame", getFrame("ConsoleUIBackdrop", 0), "", 0)
   private constant itemShopBackdrop = createFrame("ItemShopBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
+  private constant tabButton1 = createFrame("TabButton", itemShopFrame, 0, 0)
+  private constant tabButton2 = createFrame("TabButton", itemShopFrame, 0, 1)
+  private constant tabButton3 = createFrame("TabButton", itemShopFrame, 0, 2)
 
   construct()
     itemShopFrame
     ..setSize(0.245, 0.365)
     ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.8, 0.53))
+
+    tabButton1..setPoint(FRAMEPOINT_BOTTOMLEFT, itemShopFrame, FRAMEPOINT_TOPLEFT)
+    getFrame("TabText", 0)..setText("Tab1")
+    tabButton2..setPoint(FRAMEPOINT_LEFT, tabButton1, FRAMEPOINT_RIGHT)
+    getFrame("TabText", 1)..setText("Tab2")
+    tabButton3..setPoint(FRAMEPOINT_LEFT, tabButton2, FRAMEPOINT_RIGHT)
+    getFrame("TabText", 2)..setText("Tab3")
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
