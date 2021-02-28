@@ -4,7 +4,6 @@ import FramehandleNames
 import ClosureFrames
 import HashMap
 import RecipeItem
-import ItemRecipe
 
 // Sounds
 constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
@@ -125,7 +124,7 @@ public class ItemIcon
     let textValue = getFrame("BoxedTextValue", iconContext)..setText(itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip)
     ..setSize(0.24, 0)
     ..setPoint(FRAMEPOINT_TOP, textTitle, FRAMEPOINT_BOTTOM, 0, -0.005)
-    
+
     tooltip.setPoint(FRAMEPOINT_TOPRIGHT, textTitle, FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
     tooltip.setPoint(FRAMEPOINT_BOTTOMLEFT, textValue, FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
 
