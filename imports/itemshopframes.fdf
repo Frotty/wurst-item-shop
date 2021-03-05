@@ -22,44 +22,12 @@ Frame "GLUETEXTBUTTON" "GeneralButton" INHERITS WITHCHILDREN "EscMenuButtonTempl
   }
 }
 
-Frame "GLUECHECKBOX" "TabButton" {
+Frame "GLUETEXTBUTTON" "TabButton" INHERITS WITHCHILDREN "EscMenuButtonTemplate" {
   Width 0.08,
   Height 0.025,
 
-  Frame "TEXT" "TabText" {
-    SetAllPoints,
-    DecorateFileNames,
-    FrameFont "EscMenuTextFont", 0.013, "",
-    FontJustificationH JUSTIFYCENTER,
-    FontJustificationV JUSTIFYMIDDLE,    
-    FontJustificationOffset 0.0 -0.002,
-    FontFlags "FIXEDSIZE",
-    FontColor 0.99 0.827 0.0705 1.0,
-    FontHighlightColor 1.0 1.0 1.0 1.0,
-    FontDisabledColor 0.5 0.5 0.5 1.0,
-    FontShadowColor 0.0 0.0 0.0 0.9, 
-    FontShadowOffset 0.002 -0.002,
-    LayerStyle "IGNORETRACKEVENTS", 
-  }
-
-  ControlBackdrop "TabButtonBackdrop",
-  Frame "BACKDROP" "TabButtonBackdrop" INHERITS "EscMenuButtonBackdropTemplate" {
-  }
-
-  ControlDisabledBackdrop "TabButtonDisabledBackdrop",
-  Frame "BACKDROP" "TabButtonDisabledBackdrop" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
-  }
-
-  ControlPushedBackdrop "TabButtonPushedBackdrop",
-  Frame "BACKDROP" "TabButtonPushedBackdrop" INHERITS "EscMenuButtonPushedBackdropTemplate" {
-  }
-
-  CheckBoxCheckHighlight "TabButtonHighlightTemplate",
-  Frame "HIGHLIGHT" "TabButtonHighlightTemplate" {
-    DecorateFileNames,
-    HighlightType "FILETEXTURE",
-    HighlightAlphaFile "EscMenuButtonMouseOverHighlight",
-    HighlightAlphaMode "ADD",
+  ButtonText "TabText",
+  Frame "TEXT" "TabText" INHERITS "EscMenuButtonTextTemplate" {
   }
 }
 
