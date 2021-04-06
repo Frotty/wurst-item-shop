@@ -8,7 +8,6 @@ import public ItemShopIcon
 import RecipeItem
 
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
-constant screenRatio = BlzGetLocalClientWidth() / BlzGetLocalClientHeight()
 
 public class ItemShop
   private var buyers = new IterableMap<player, unit>
@@ -31,7 +30,6 @@ public class ItemShop
   construct()
     itemShopFrame
     ..setSize(0.245, 0.365)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(screenRatio < 1.61 ? 0.6 : 0.8, 0.53))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
@@ -54,12 +52,22 @@ public class ItemShop
     buyers.put(buyer, null)
     itemShopFrame.show(buyer)
     checkBuyability(buyer)
+    checkShopPos(buyer)
 
   function showToUnit(unit buyer)
     let owner = buyer.getOwner()
     buyers.put(owner, buyer)
     itemShopFrame.show(owner)
     checkBuyability(owner)
+    checkShopPos(owner)
+
+  function checkShopPos(player p)
+    if localPlayer == p
+      let screenRatio = BlzGetLocalClientWidth() / BlzGetLocalClientHeight()
+      let xPos = screenRatio < 1.61 ? 0.6 : 0.8
+      let vecPos = vec2(xPos, 0.53)
+      itemShopFrame
+      ..setAbsPoint(FRAMEPOINT_TOP, vecPos)
 
   function hideForUnit(unit buyer)
     buyers.remove(buyer.getOwner())
