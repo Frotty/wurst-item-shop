@@ -8,6 +8,7 @@ import public ItemShopIcon
 import RecipeItem
 
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
+constant screenRatio = BlzGetLocalClientWidth() / BlzGetLocalClientHeight()
 
 public class ItemShop
   private var buyers = new IterableMap<player, unit>
@@ -15,11 +16,11 @@ public class ItemShop
 
   private constant PADDINGX = 0.0200
   private constant PADDINGY = 0.0150
-  private constant HORIZONTAL_SPACING = 0.0255
+  private constant HORIZONTAL_SPACING = 0.0225
   private constant VERTICAL_SPACING = -0.0375
   private constant SECTION_SPACING = -0.0125
   private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
-  private constant MAX_ICONS_PER_ROW = 7
+  private constant MAX_ICONS_PER_ROW = 8
 
   private var currentVertSpacing = 0.
   private var currentRowItems = 0
@@ -30,7 +31,7 @@ public class ItemShop
   construct()
     itemShopFrame
     ..setSize(0.245, 0.365)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.8, 0.53))
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(screenRatio < 1.61 ? 0.6 : 0.8, 0.53))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()

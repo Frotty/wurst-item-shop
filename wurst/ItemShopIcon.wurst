@@ -50,7 +50,7 @@ public class ItemIcon
       ..setTextColor(colorA(255, 215, 0, 1))
       ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
 
-    itemIconButton.setSize(0.025, 0.025)
+    itemIconButton.setSize(0.0225, 0.0225)
 
   function setupItem(RecipeItem def)
     this.itemDef = def
