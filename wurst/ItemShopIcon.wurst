@@ -118,10 +118,14 @@ public class ItemIcon
 
     itemIcon.setTexture(iconPath, 0, true)
 
-    let textTitle = getFrame("BoxedTextTitle", iconContext)..setText(itemDef != null ? itemDef.tooltipBasic : recipeDef.name)
+    let goldcost = itemDef != null ? itemDef.goldCost : recipeDef.goldCost
+    let title = itemDef != null ? itemDef.tooltipBasic : recipeDef.name
+    let description = itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip
+
+    let textTitle = getFrame("BoxedTextTitle", iconContext)..setText("(" + COLOR_GOLD.toColorString() + goldcost.toString() + "|r) " + title)
     ..setSize(0.24, 0)
     ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
-    let textValue = getFrame("BoxedTextValue", iconContext)..setText(itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip)
+    let textValue = getFrame("BoxedTextValue", iconContext)..setText(description)
     ..setSize(0.24, 0)
     ..setPoint(FRAMEPOINT_TOP, textTitle, FRAMEPOINT_BOTTOM, 0, -0.005)
 

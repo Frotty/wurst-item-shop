@@ -16,7 +16,7 @@ public class ItemShop
   private constant PADDINGX = 0.0200
   private constant PADDINGY = 0.0150
   private constant HORIZONTAL_SPACING = 0.0225
-  private constant VERTICAL_SPACING = -0.0375
+  private constant VERTICAL_SPACING = -0.034
   private constant SECTION_SPACING = -0.0125
   private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
   private constant MAX_ICONS_PER_ROW = 8
