@@ -11,4 +11,5 @@ You need to add the .toc and .fdef files from the imports folder into your own p
 
 Demo: https://github.com/Frotty/wurst-item-shop/blob/main/wurst/ItemShopTest.wurst
 
-![](https://github.com/Frotty/wurst-item-shop/blob/main/screenshot.png)
+![image](https://user-images.githubusercontent.com/1486037/114105191-a2fa6000-98cc-11eb-8565-5e1e78245d5f.png)
+
