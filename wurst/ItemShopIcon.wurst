@@ -108,7 +108,7 @@ public class ItemIcon
         itemText.setTextColor(colorA(200, 155, 0, 1))
 
   private function setupIcon()
-    let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
+    let tooltip = createFrame("BoxedText", itemIconButton, -1, iconContext)
     itemIconButton.setTooltip(tooltip)
 
     let tempItem = createItem(itemDef != null ? itemDef.tomeId : recipeDef.resultItemId, vec2(0, 0))
