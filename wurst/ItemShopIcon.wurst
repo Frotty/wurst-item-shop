@@ -125,9 +125,11 @@ public class ItemIcon
     let textTitle = getFrame("BoxedTextTitle", iconContext)..setText("(" + COLOR_GOLD.toColorString() + goldcost.toString() + "|r) " + title)
     ..setSize(0.24, 0)
     ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
+    ..disable()
     let textValue = getFrame("BoxedTextValue", iconContext)..setText(description)
     ..setSize(0.24, 0)
     ..setPoint(FRAMEPOINT_TOP, textTitle, FRAMEPOINT_BOTTOM, 0, -0.005)
+    ..disable()
 
     tooltip.setPoint(FRAMEPOINT_TOPRIGHT, textTitle, FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
     tooltip.setPoint(FRAMEPOINT_BOTTOMLEFT, textValue, FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
