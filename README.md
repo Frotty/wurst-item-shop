@@ -1,9 +1,9 @@
 # wurst-item-shop
 
-Requires `wurst-item-recipes`.
-
-1. `grill install https://github.com/Frotty/wurst-item-recipes:main`
-2. `grill install https://github.com/Frotty/wurst-item-shop:main`
+Requires `wurst-bonus-handler` and `wurst-item-recipes`.
+1. `grill install https://github.com/Frotty/wurst-bonus-handler`
+2. `grill install https://github.com/Frotty/wurst-item-recipes:main`
+3. `grill install https://github.com/Frotty/wurst-item-shop:main`
 
 Easily add a fullscreen item shop to your map using the new ui natives.
 
