@@ -29,6 +29,9 @@ public class ToggleShopButton
     this.buttonFrame.show(p)
     targets.put(p, target)
 
+  function hide(player p)
+    this.buttonFrame.hide(p)
+
   function addHotkeyForPlayer(player p, oskeytype key)
     let trig = CreateTrigger()
     ..addAction() ->

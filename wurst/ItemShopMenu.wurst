@@ -6,20 +6,20 @@ import ClosureTimers
 import LinkedList
 import public ItemShopIcon
 import RecipeItem
+import ItemShop
 
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
+
+constant PADDINGX = 0.0200
+constant PADDINGY = 0.0150
+constant HORIZONTAL_SPACING = 0.0225
+constant VERTICAL_SPACING = -0.034
+constant SECTION_SPACING = -0.0125
+constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
 
 public class ItemShop
   private var buyers = new IterableMap<player, unit>
   private var items = new LinkedList<ItemIcon>
-
-  private constant PADDINGX = 0.0200
-  private constant PADDINGY = 0.0150
-  private constant HORIZONTAL_SPACING = 0.0225
-  private constant VERTICAL_SPACING = -0.034
-  private constant SECTION_SPACING = -0.0125
-  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
-  private constant MAX_ICONS_PER_ROW = 8
 
   private var currentVertSpacing = 0.
   private var currentRowItems = 0
@@ -29,8 +29,8 @@ public class ItemShop
 
   construct()
     itemShopFrame
-    ..setSize(0.245, 0.365)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.8, 0.53))
+    ..setSize(ITEM_SHOP_WIDTH, ITEM_SHOP_HEIGHT)
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(ITEM_X_POS, ITEM_Y_POS))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
@@ -98,7 +98,7 @@ public class ItemShop
 
     icon.setIconPosition(itemShopFrame, currentInsertPos())
     currentRowItems++
-    if currentRowItems > MAX_ICONS_PER_ROW
+    if currentRowItems > ITEM_SHOP_ITEMS_PER_ROW
       currentVertSpacing += VERTICAL_SPACING
       currentRowItems = 0
 
@@ -109,7 +109,7 @@ public class ItemShop
 
     icon.setIconPosition(itemShopFrame, currentInsertPos())
     currentRowItems++
-    if currentRowItems > MAX_ICONS_PER_ROW
+    if currentRowItems > ITEM_SHOP_ITEMS_PER_ROW
       currentVertSpacing += VERTICAL_SPACING
       currentRowItems = 0
 
