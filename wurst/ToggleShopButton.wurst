@@ -2,6 +2,7 @@ package ToggleShopButton
 import ClosureFrames
 import HashMap
 import ItemShopMenu
+import ItemShop
 
 constant hotkeyMap = new HashMap<trigger, ItemShop>
 constant targets = new HashMap<player, unit>
@@ -15,7 +16,7 @@ public class ToggleShopButton
     this.shop = shop
     buttonFrame
     ..setSize(0.09, 0.032)
-    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.55, 0.138))
+    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(SHOP_BTN_X_POS, SHOP_BTN_Y_POS))
     ..setText(title)
     ..setScale(0.9)
     ..hide()

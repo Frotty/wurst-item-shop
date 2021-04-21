@@ -2,6 +2,9 @@ package ItemShop
 
 @configurable public constant ITEM_SHOP_WIDTH = 0.245
 @configurable public constant ITEM_SHOP_HEIGHT = 0.365
-@configurable public constant ITEM_X_POS = 0.8
-@configurable public constant ITEM_Y_POS = 0.53
+@configurable public constant ITEM_SHOP_X_POS = 0.8
+@configurable public constant ITEM_SHOP_Y_POS = 0.53
 @configurable public constant ITEM_SHOP_ITEMS_PER_ROW = 8
+
+@configurable public constant SHOP_BTN_X_POS = 0.55
+@configurable public constant SHOP_BTN_Y_POS = 0.138
