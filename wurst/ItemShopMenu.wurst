@@ -11,10 +11,11 @@ import ItemShop
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
 
 constant PADDINGX = 0.0175
-constant PADDINGY = 0.0150
+constant PADDINGY = 0.0125
 constant HORIZONTAL_SPACING = 0.024
 constant VERTICAL_SPACING = -0.024
-constant SECTION_SPACING = -0.0125
+constant SECTION_TOP_SPACING = -0.0025
+constant SECTION_BOTTOM_SPACING = -0.0125
 constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
 
 public class ItemShop
@@ -83,9 +84,11 @@ public class ItemShop
       currentVertSpacing += VERTICAL_SPACING
       currentRowItems = 0
 
+    currentVertSpacing += SECTION_TOP_SPACING
+
     new ShopSection(itemShopFrame, title, currentInsertPos())
 
-    currentVertSpacing += SECTION_SPACING
+    currentVertSpacing += SECTION_BOTTOM_SPACING
 
   function currentInsertPos() returns vec2
     return ITEM_ICON_INITIAL_POSITION + vec2(currentRowItems * HORIZONTAL_SPACING, currentVertSpacing)
