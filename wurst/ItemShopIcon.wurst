@@ -46,16 +46,11 @@ public class ItemIcon
     itemIcon = createFrame(FramehandleTypeNames.backdrop, "itemIcon", itemIconButton, "", iconContext)
       ..setAllPoints(itemIconButton)
 
-    itemText = createFrame(FramehandleTypeNames.text, "itemText", itemIconButton, "", iconContext)
-      ..setTextColor(colorA(255, 215, 0, 1))
-      ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
-
     itemIconButton.setSize(0.0225, 0.0225)
 
   function setupItem(RecipeItem def)
     this.itemDef = def
     setupIcon()
-    itemText..setText(itemDef.goldCost.toString())
     itemIconButton.onClick() ->
       let p = GetTriggerPlayer()
       let target = buyers.get(p)
