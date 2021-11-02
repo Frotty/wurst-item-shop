@@ -48,7 +48,8 @@ public class ItemShop
 
   function checkBuyability(player p)
     let gold = p.getGold()
-    items.forEach(icon -> icon.checkBuyability(p, gold))
+    let lumber = p.getLumber()
+    items.forEach(icon -> icon.checkBuyability(p, gold, lumber))
 
   function showToPlayer(player buyer)
     buyers.put(buyer, null)

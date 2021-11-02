@@ -1,4 +1,5 @@
 package ItemShop
+import Textures
 
 @configurable public constant ITEM_SHOP_WIDTH = 0.25
 @configurable public constant ITEM_SHOP_HEIGHT = 0.365
@@ -8,3 +9,6 @@ package ItemShop
 
 @configurable public constant SHOP_BTN_X_POS = 0.55
 @configurable public constant SHOP_BTN_Y_POS = 0.138
+
+@configurable public constant GOLD_ICON = Textures.toolTipGoldIcon
+@configurable public constant LUMBER_ICON = Textures.toolTipLumberIcon

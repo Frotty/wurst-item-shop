@@ -4,6 +4,7 @@ import FramehandleNames
 import ClosureFrames
 import HashMap
 import RecipeItem
+import ItemShop
 
 // Sounds
 constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
@@ -59,8 +60,9 @@ public class ItemIcon
 
       if target != null
         if target.isAlive()
-          if p.getGold() >= itemDef.goldCost
-            p.setGold(p.getGold() - itemDef.goldCost)
+          if p.getGold() >= itemDef.goldCost and p.getLumber() >= itemDef.lumberCost
+            p..addGold(-itemDef.goldCost)
+            ..addLumber(-itemDef.lumberCost)
             target.addItemById(itemDef.tomeId)
             itemBoughtSound.playForPlayer(p)
           else
@@ -81,9 +83,10 @@ public class ItemIcon
 
       if target != null
         if target.isAlive()
-          if p.getGold() >= recipeDef.goldCost
+          if p.getGold() >= recipeDef.goldCost and p.getLumber() >= recipeDef.lumberCost
             if recipeDef.checkUnit(target, -1)
-              p.setGold(p.getGold() - recipeDef.goldCost)
+              p..addGold(-recipeDef.goldCost)
+              ..addLumber(-recipeDef.lumberCost)
               itemBoughtSound.playForPlayer(p)
             else
               simerror(p, "Missing required items!")
@@ -93,9 +96,10 @@ public class ItemIcon
         cantBuyItemSound.playForPlayer(p)
 
 
-  function checkBuyability(player p, int gold)
+  function checkBuyability(player p, int gold, int lumber)
     if p == localPlayer
-      if ((itemDef != null ? itemDef.goldCost : recipeDef.goldCost) <= gold)
+      if ((itemDef != null ? itemDef.goldCost : recipeDef.goldCost) <= gold and
+        (itemDef != null ? itemDef.lumberCost : recipeDef.lumberCost) <= lumber)
         itemIcon.setTexture(iconPath, 0, true)
         itemText.setTextColor(colorA(255, 215, 0, 1))
       else
@@ -106,7 +110,7 @@ public class ItemIcon
     let tooltip = createFrame("FRAME", "", itemIconButton, "", iconContext)
     ..setSize(0.24, 0.04)
     ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT, vec2(-0.005, 0))
-    
+
     itemIconButton.setTooltip(tooltip)
 
     let tooltipBackdrop = createFrame("BoxedText", tooltip, 0, iconContext)
@@ -119,6 +123,7 @@ public class ItemIcon
     itemIcon.setTexture(iconPath, 0, true)
 
     let goldcost = itemDef != null ? itemDef.goldCost : recipeDef.goldCost
+    let lumbercost = itemDef != null ? itemDef.lumberCost : recipeDef.lumberCost
     let title = itemDef != null ? itemDef.tooltipBasic : recipeDef.name
     let description = itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip
 
@@ -134,24 +139,40 @@ public class ItemIcon
     ..setPoint(FRAMEPOINT_TOPLEFT, itemIconTooltip, FRAMEPOINT_TOPRIGHT, vec2(0.002, 0))
     ..disable()
 
-    let goldIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
-    ..setSize(0.01, 0.01)
-    ..setTexture("UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0, false)
-    ..setPoint(FRAMEPOINT_TOPLEFT, textTitle, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.002))
-    ..disable()
-    let goldIconText = createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
-    ..setText(goldcost.toString())
-    ..setPoint(FRAMEPOINT_LEFT, goldIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
-    ..disable()
-    let lumberIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
-    ..setSize(0.01, 0.01)
-    ..setTexture("UI\\Widgets\\ToolTips\\Human\\ToolTipLumberIcon.blp", 0, false)
-    ..setPoint(FRAMEPOINT_LEFT, goldIconText, FRAMEPOINT_RIGHT, vec2(0.006, 0))
-    ..disable()
-    createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
-    ..setText("0")
-    ..setPoint(FRAMEPOINT_LEFT, lumberIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
-    ..disable()
+    if goldcost == 0 and lumbercost == 0
+      createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
+        ..setText("(free recipe)")
+        ..setPoint(FRAMEPOINT_TOPLEFT, textTitle, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.002))
+        ..disable()
+    else
+      framehandle goldIconText = null
+      if goldcost > 0
+        let goldIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
+        ..setSize(0.01, 0.01)
+        ..setTexture(GOLD_ICON, 0, false)
+        ..setPoint(FRAMEPOINT_TOPLEFT, textTitle, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.002))
+        ..disable()
+
+        goldIconText = createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
+        ..setText(goldcost.toString())
+        ..setPoint(FRAMEPOINT_LEFT, goldIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
+        ..disable()
+
+      if lumbercost > 0
+        let lumberIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
+        ..setSize(0.01, 0.01)
+        ..setTexture(LUMBER_ICON, 0, false)
+        ..setPoint(goldIconText != null ? FRAMEPOINT_LEFT : FRAMEPOINT_TOPLEFT,
+                    goldIconText != null ? goldIconText : textTitle,
+                    goldIconText != null ? FRAMEPOINT_RIGHT : FRAMEPOINT_BOTTOMLEFT,
+                    goldIconText != null ? vec2(0.006, 0) : vec2(0, -0.002))
+        ..disable()
+
+        createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
+        ..setText(lumbercost.toString())
+        ..setPoint(FRAMEPOINT_LEFT, lumberIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
+        ..disable()
+
 
     let textValue = getFrame("BoxedTextValue", iconContext)
     ..setText(description)
@@ -161,7 +182,7 @@ public class ItemIcon
 
     tooltipBackdrop.setPoint(FRAMEPOINT_TOPLEFT, itemIconTooltip, FRAMEPOINT_TOPLEFT, -0.005, 0.005)
     tooltipBackdrop.setPoint(FRAMEPOINT_BOTTOMRIGHT, textValue, FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.005)
-    
+
     tempItem.remove()
 
   function setIconPosition(framehandle parent, vec2 iconPosition)
