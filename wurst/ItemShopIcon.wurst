@@ -103,8 +103,13 @@ public class ItemIcon
         itemText.setTextColor(colorA(200, 155, 0, 1))
 
   private function setupIcon()
-    let tooltip = createFrame("BoxedText", itemIconButton, -1, iconContext)
+    let tooltip = createFrame("FRAME", "", itemIconButton, "", iconContext)
+    ..setSize(0.24, 0.04)
+    ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT, vec2(-0.005, 0))
+    
     itemIconButton.setTooltip(tooltip)
+
+    let tooltipBackdrop = createFrame("BoxedText", tooltip, 0, iconContext)
 
     let tempItem = createItem(itemDef != null ? itemDef.tomeId : recipeDef.resultItemId, vec2(0, 0))
 
@@ -117,18 +122,46 @@ public class ItemIcon
     let title = itemDef != null ? itemDef.tooltipBasic : recipeDef.name
     let description = itemDef != null ? itemDef.tooltipExtended : recipeDef.tooltip
 
-    let textTitle = getFrame("BoxedTextTitle", iconContext)..setText("(" + COLOR_GOLD.toColorString() + goldcost.toString() + "|r) " + title)
-    ..setSize(0.24, 0)
-    ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
-    ..disable()
-    let textValue = getFrame("BoxedTextValue", iconContext)..setText(description)
-    ..setSize(0.24, 0)
-    ..setPoint(FRAMEPOINT_TOP, textTitle, FRAMEPOINT_BOTTOM, 0, -0.005)
+    let itemIconTooltip = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
+    ..setSize(0.025, 0.025)
+    ..setTexture(iconPath, 0, false)
+    ..setPoint(FRAMEPOINT_TOPLEFT, tooltip, FRAMEPOINT_TOPLEFT)
     ..disable()
 
-    tooltip.setPoint(FRAMEPOINT_TOPRIGHT, textTitle, FRAMEPOINT_TOPRIGHT, 0.005, 0.005)
-    tooltip.setPoint(FRAMEPOINT_BOTTOMLEFT, textValue, FRAMEPOINT_BOTTOMLEFT, -0.005, -0.005)
+    let textTitle = getFrame("BoxedTextTitle", iconContext)
+    ..setText(title)
+    ..setSize(0.24, 0)
+    ..setPoint(FRAMEPOINT_TOPLEFT, itemIconTooltip, FRAMEPOINT_TOPRIGHT, vec2(0.002, 0))
+    ..disable()
 
+    let goldIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
+    ..setSize(0.01, 0.01)
+    ..setTexture("UI\\Widgets\\ToolTips\\Human\\ToolTipGoldIcon.blp", 0, false)
+    ..setPoint(FRAMEPOINT_TOPLEFT, textTitle, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.002))
+    ..disable()
+    let goldIconText = createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
+    ..setText(goldcost.toString())
+    ..setPoint(FRAMEPOINT_LEFT, goldIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
+    ..disable()
+    let lumberIcon = createFrame(FramehandleTypeNames.backdrop, "", tooltip, "", 0)
+    ..setSize(0.01, 0.01)
+    ..setTexture("UI\\Widgets\\ToolTips\\Human\\ToolTipLumberIcon.blp", 0, false)
+    ..setPoint(FRAMEPOINT_LEFT, goldIconText, FRAMEPOINT_RIGHT, vec2(0.006, 0))
+    ..disable()
+    createFrame(FramehandleTypeNames.text, "", tooltip, "", 0)
+    ..setText("0")
+    ..setPoint(FRAMEPOINT_LEFT, lumberIcon, FRAMEPOINT_RIGHT, vec2(0.003, 0))
+    ..disable()
+
+    let textValue = getFrame("BoxedTextValue", iconContext)
+    ..setText(description)
+    ..setSize(0.24, 0)
+    ..setPoint(FRAMEPOINT_TOPLEFT, itemIconTooltip, FRAMEPOINT_BOTTOMLEFT, 0, -0.005)
+    ..disable()
+
+    tooltipBackdrop.setPoint(FRAMEPOINT_TOPLEFT, itemIconTooltip, FRAMEPOINT_TOPLEFT, -0.005, 0.005)
+    tooltipBackdrop.setPoint(FRAMEPOINT_BOTTOMRIGHT, textValue, FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.005)
+    
     tempItem.remove()
 
   function setIconPosition(framehandle parent, vec2 iconPosition)
