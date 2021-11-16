@@ -49,6 +49,9 @@ public class ItemIcon
 
     itemIconButton.setSize(0.0225, 0.0225)
 
+  function getIconFrame() returns framehandle
+    return itemIconButton
+
   function setupItem(RecipeItem def)
     this.itemDef = def
     setupIcon()
@@ -184,6 +187,3 @@ public class ItemIcon
     tooltipBackdrop.setPoint(FRAMEPOINT_BOTTOMRIGHT, textValue, FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.005)
 
     tempItem.remove()
-
-  function setIconPosition(framehandle parent, vec2 iconPosition)
-    itemIconButton.setPoint(FRAMEPOINT_TOPLEFT, parent, FRAMEPOINT_TOPLEFT, iconPosition)

@@ -1,5 +1,5 @@
 package ItemShopMenu
-import FramehandleNames
+import TableLayout
 import HashMap
 import SoundUtils
 import ClosureTimers
@@ -12,17 +12,15 @@ constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
 
 constant PADDINGX = 0.0175
 constant PADDINGY = 0.0125
-constant HORIZONTAL_SPACING = 0.024
-constant VERTICAL_SPACING = -0.024
-constant SECTION_TOP_SPACING = -0.0025
-constant SECTION_BOTTOM_SPACING = -0.0125
-constant ITEM_ICON_INITIAL_POSITION = vec2(PADDINGX, -PADDINGY)
+constant ICON_SPACING = 0.0015
+constant SECTION_TOP_SPACING = 0.0045
+constant SECTION_BOTTOM_SPACING = 0.0025
 
 public class ItemShop
   private var buyers = new IterableMap<player, unit>
   private var items = new LinkedList<ItemIcon>
 
-  private var currentVertSpacing = 0.
+  private var tableLayout = new TableLayout(ITEM_SHOP_WIDTH, ITEM_SHOP_HEIGHT)
   private var currentRowItems = 0
 
   constant itemShopFrame = createFrame("FRAME", "itemShopFrame", getFrame("ConsoleUIBackdrop", 0), "", 0)
@@ -35,6 +33,9 @@ public class ItemShop
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
+
+    tableLayout.padding = padding(PADDINGY, 0, PADDINGY, PADDINGX)
+    tableLayout.applyTo(itemShopFrame)
 
     doPeriodically(0.5) cb ->
       buyers.forEach() (_player, value) ->
@@ -81,54 +82,42 @@ public class ItemShop
     itemShopFrame.hide(buyer)
 
   function addSection(string title)
-    if currentRowItems > 0
-      currentVertSpacing += VERTICAL_SPACING
-      currentRowItems = 0
+    tableLayout
+    ..row()
+    ..add(p(title))..padTop(SECTION_TOP_SPACING)..padBot(SECTION_BOTTOM_SPACING)
+    ..row()
 
-    currentVertSpacing += SECTION_TOP_SPACING
+    layout()
 
-    new ShopSection(itemShopFrame, title, currentInsertPos())
-
-    currentVertSpacing += SECTION_BOTTOM_SPACING
-
-  function currentInsertPos() returns vec2
-    return ITEM_ICON_INITIAL_POSITION + vec2(currentRowItems * HORIZONTAL_SPACING, currentVertSpacing)
-
+  function layout()
+    tableLayout.layout()
 
   function addRecipe(ItemRecipe recipeDef)
     let icon = new ItemIcon(itemShopFrame, buyers)
     icon.setupRecipe(recipeDef)
     items.add(icon)
 
-    icon.setIconPosition(itemShopFrame, currentInsertPos())
+    tableLayout..add(icon.getIconFrame())..padRight(ICON_SPACING)..padBot(ICON_SPACING)
     currentRowItems++
     if currentRowItems > ITEM_SHOP_ITEMS_PER_ROW
-      currentVertSpacing += VERTICAL_SPACING
+      tableLayout.row()
       currentRowItems = 0
+
+    layout()
 
   function addItem(RecipeItem itemDef)
     let icon = new ItemIcon(itemShopFrame, buyers)
     icon.setupItem(itemDef)
     items.add(icon)
 
-    icon.setIconPosition(itemShopFrame, currentInsertPos())
+    tableLayout..add(icon.getIconFrame())..padRight(ICON_SPACING)..padBot(ICON_SPACING)
     currentRowItems++
     if currentRowItems > ITEM_SHOP_ITEMS_PER_ROW
-      currentVertSpacing += VERTICAL_SPACING
+      tableLayout.row()
       currentRowItems = 0
+
+    layout()
 
 
 init
-  nullTimer() ->
-    let success = BlzLoadTOCFile("itemshop.toc")
-    if not success
-      print("TOC files could not be loaded")
-
-class ShopSection
-  framehandle itemText
-
-  construct(framehandle parent, string name, vec2 pos)
-    itemText = createFrame(FramehandleTypeNames.text, "itemText", parent, "", GetRandomInt(0, 1000000))
-    ..setText(name)
-    ..setTextColor(colorA(255, 255, 255, 1))
-    ..setPoint(FRAMEPOINT_TOPLEFT, parent, FRAMEPOINT_TOPLEFT, pos)
+  loadTOCFile("itemshop.toc")
