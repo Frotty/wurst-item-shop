@@ -87,6 +87,8 @@ public class ItemShop
     ..add(p(title))..padTop(SECTION_TOP_SPACING)..padBot(SECTION_BOTTOM_SPACING)
     ..row()
 
+    currentRowItems = 0
+
     layout()
 
   function layout()
