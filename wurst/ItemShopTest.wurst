@@ -5,6 +5,8 @@ import ToggleShopButton
 import UnitIds
 import RecipeItem
 import Icons
+import Execute
+import ClosureEvents
 
 constant SWORD_ITEM = compiletime(new RecipeItem()
   ..setName("Cool Sword")
@@ -44,11 +46,12 @@ constant SUPER_ARMOR_RECIPE = new ItemRecipe()
   ..setResultItem(SUPER_ARMOR_ITEM)
 
 init
-  nullTimer() ->
+  doAfter(0.5) ->
     let shop = new ItemShop()
-    ..addSection("Armor")
+    ..addSection("Consumables")
     ..addItem(SWORD_ITEM)
     ..addItem(RING_ITEM)
+    ..addSection("Basic Items")
     ..addItem(ARMOR_ITEM)
     ..addItem(ARMOR_ITEM)
     ..addItem(ARMOR_ITEM)
@@ -66,11 +69,76 @@ init
     ..addItem(ARMOR_ITEM)
     ..addItem(ARMOR_ITEM)
     ..addItem(ARMOR_ITEM)
-    ..addSection("Recipes")
-    ..addRecipe(SUPER_ARMOR_RECIPE)
+    ..addItem(ARMOR_ITEM)
+    ..addItem(ARMOR_ITEM)
+    ..addItem(ARMOR_ITEM)
+    ..addItem(ARMOR_ITEM)
+    ..addItem(ARMOR_ITEM)
+    ..addItem(ARMOR_ITEM)
+
+    execute() ->
+      shop..addSection("Tier 1 Recipes")
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+
+    execute() ->
+      shop..addSection("Tier 2 Recipes")
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
+      ..addItem(ARMOR_ITEM)
 
     new ToggleShopButton(shop, "Shop (L)")
-    ..show(players[0], createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0)))
+    ..show(players[0])
     ..addHotkeyForPlayer(players[0], OSKEY_L)
+
+    let bm1 = createUnit(players[0], UnitIds.bloodmage, ZERO2, angle(0))
+    let bag = createUnit(players[0], UnitIds.paladin, ZERO2, angle(0))
+
+    shop.setPlayerTarget(bm1.getOwner(), bm1)
+
+    EventListener.add(bm1, EVENT_PLAYER_UNIT_SELECTED) ->
+      print("set target hero1")
+      shop.setPlayerTarget(bm1.getOwner(), bm1)
+
+    EventListener.add(bag, EVENT_PLAYER_UNIT_SELECTED) ->
+      print("set target hero2")
+      shop.setPlayerTarget(bag.getOwner(), bag)
 
     players[0].addGold(900)

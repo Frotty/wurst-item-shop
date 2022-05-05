@@ -7,6 +7,7 @@ import LinkedList
 import public ItemShopIcon
 import RecipeItem
 import ItemShop
+import HashSet
 
 constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
 
@@ -17,7 +18,8 @@ constant SECTION_TOP_SPACING = 0.0045
 constant SECTION_BOTTOM_SPACING = 0.0025
 
 public class ItemShop
-  private var buyers = new IterableMap<player, unit>
+  private var targets = new HashMap<player, unit>
+  private var buyers = new HashSet<player>
   private var items = new LinkedList<ItemIcon>
 
   private var tableLayout = new TableLayout(ITEM_SHOP_WIDTH, ITEM_SHOP_HEIGHT)
@@ -38,14 +40,17 @@ public class ItemShop
     tableLayout.applyTo(itemShopFrame)
 
     doPeriodically(0.5) cb ->
-      buyers.forEach() (_player, value) ->
+      buyers.forEach() (_player) ->
         checkBuyability(_player)
 
-  function toggleView(player p, unit u)
+  function setPlayerTarget(player p, unit target)
+    targets.put(p, target)
+
+  function toggleView(player p)
     if buyers.has(p)
       hideForPlayer(p)
     else
-      showToUnit(u)
+      showToPlayer(p)
 
   function checkBuyability(player p)
     let gold = p.getGold()
@@ -53,14 +58,15 @@ public class ItemShop
     items.forEach(icon -> icon.checkBuyability(p, gold, lumber))
 
   function showToPlayer(player buyer)
-    buyers.put(buyer, null)
+    buyers.add(buyer)
     itemShopFrame.show(buyer)
     checkBuyability(buyer)
     checkShopPos(buyer)
 
   function showToUnit(unit buyer)
     let owner = buyer.getOwner()
-    buyers.put(owner, buyer)
+    buyers.add(owner)
+    targets.put(owner, buyer)
     itemShopFrame.show(owner)
     checkBuyability(owner)
     checkShopPos(owner)
@@ -95,7 +101,7 @@ public class ItemShop
     tableLayout.layout()
 
   function addRecipe(ItemRecipe recipeDef)
-    let icon = new ItemIcon(itemShopFrame, buyers)
+    let icon = new ItemIcon(itemShopFrame, targets)
     icon.setupRecipe(recipeDef)
     items.add(icon)
 
@@ -108,7 +114,7 @@ public class ItemShop
     layout()
 
   function addItem(RecipeItem itemDef)
-    let icon = new ItemIcon(itemShopFrame, buyers)
+    let icon = new ItemIcon(itemShopFrame, targets)
     icon.setupItem(itemDef)
     items.add(icon)
 

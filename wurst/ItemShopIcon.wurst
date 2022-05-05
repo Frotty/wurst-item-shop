@@ -35,11 +35,11 @@ public class ItemIcon
   private framehandle itemIcon = null
   private framehandle itemText = null
 
-  IterableMap<player, unit> buyers
+  HashMap<player, unit> targets
 
-  construct(framehandle parent, IterableMap<player, unit> buyers)
+  construct(framehandle parent, HashMap<player, unit> targets)
     this.iconContext = globalIconContext
-    this.buyers = buyers
+    this.targets = targets
     globalIconContext++
 
     itemIconButton = createFrame(FramehandleTypeNames.gluebutton, "ItemIconButton", parent, FramehandleNames.iconButtonTemplate, iconContext)
@@ -57,7 +57,7 @@ public class ItemIcon
     setupIcon()
     itemIconButton.onClick() ->
       let p = GetTriggerPlayer()
-      let target = buyers.get(p)
+      let target = targets.get(p)
 
       itemIconButton.removeFocus()
 
@@ -80,7 +80,7 @@ public class ItemIcon
     itemText..setText(recipeDef.goldCost.toString())
     itemIconButton.onClick() ->
       let p = GetTriggerPlayer()
-      let target = buyers.get(p)
+      let target = targets.get(p)
 
       itemIconButton.removeFocus()
 
