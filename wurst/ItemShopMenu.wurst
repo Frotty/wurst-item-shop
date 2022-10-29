@@ -90,7 +90,11 @@ public class ItemShop
   function addSection(string title)
     tableLayout
     ..row()
-    ..add(p(title))..padTop(SECTION_TOP_SPACING)..padBot(SECTION_BOTTOM_SPACING)
+    ..add(
+      createFrame("p", tableLayout.baseFrame, 0, 0)
+      ..setText(title)
+      ..setTextAlignment(TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+      )..padTop(SECTION_TOP_SPACING)..padBot(SECTION_BOTTOM_SPACING)
     ..row()
 
     currentRowItems = 0
