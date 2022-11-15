@@ -3,7 +3,7 @@ import Textures
 
 @configurable public constant ITEM_SHOP_WIDTH = 0.25
 @configurable public constant ITEM_SHOP_HEIGHT = 0.365
-@configurable public constant ITEM_SHOP_X_POS = 0.8
+@configurable public constant ITEM_SHOP_X_POS = 0.75
 @configurable public constant ITEM_SHOP_Y_POS = 0.53
 @configurable public constant ITEM_SHOP_ITEMS_PER_ROW = 8
 

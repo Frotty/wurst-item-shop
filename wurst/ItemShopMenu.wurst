@@ -30,8 +30,8 @@ public class ItemShop
 
   construct()
     itemShopFrame
-    ..setSize(ITEM_SHOP_WIDTH, ITEM_SHOP_HEIGHT)
-    ..setAbsPoint(FRAMEPOINT_TOP, vec2(ITEM_SHOP_X_POS, ITEM_SHOP_Y_POS))
+    ..setAbsPoint(FRAMEPOINT_TOPRIGHT, vec2(ITEM_SHOP_X_POS, ITEM_SHOP_Y_POS))
+    ..setAbsPoint(FRAMEPOINT_BOTTOMLEFT, vec2(ITEM_SHOP_X_POS - ITEM_SHOP_WIDTH, ITEM_SHOP_Y_POS - ITEM_SHOP_HEIGHT))
 
     itemShopBackdrop.setAllPoints(itemShopFrame)
     itemShopFrame.hide()
